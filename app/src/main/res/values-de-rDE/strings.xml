@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">OfflineWordTranslation</string>
+    <string name="start_jorney">Reise starten</string>
+    <string name="welcome">Willkommen</string>
+    <string name="description">Du bist Part einer wichtigen Mission! Lass dir von unserem Prof. Schlau helfen Haliki, die Sprache der Uhreinwohner, zu verstehen.</string>
+    <string name="scan_help">Zum Scannen halte bitte dein Tablet über die Haiki Schriftzeichen.</string>
+    <string name="translation_scanning">Übersetzung Scannen</string>
+    <string name="pdf_transcript">PDF Transkript</string>
+    <string name="write_here">Hier schreiben!</string>
+    <string name="explore_start">Erforschen Starten</string>
+</resources>
