@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,7 +8,7 @@
     android:orientation="vertical"
     tools:context=".TranslationActivity">
 
-    <android.support.constraint.ConstraintLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="20dp">
@@ -27,6 +27,14 @@
                 android:layout_marginTop="5dp"
                 android:src="@drawable/ic_back" />
 
+            <Spinner
+                android:id="@+id/general_languages"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="-30dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="end" />
 
             <LinearLayout
                 android:id="@+id/chat"
@@ -58,7 +66,7 @@
                 android:layout_marginEnd="15dp"
                 android:src="@drawable/professor" />
 
-            <android.support.design.button.MaterialButton
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_camera"
                 android:layout_width="220dp"
                 android:layout_height="50dp"
@@ -72,7 +80,7 @@
                 app:iconSize="25dp"
                 app:iconTint="@color/black" />
 
-            <android.support.design.button.MaterialButton
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_pdf"
                 android:layout_width="220dp"
                 android:layout_height="50dp"
@@ -82,6 +90,19 @@
                 android:textAlignment="center"
                 android:textSize="12sp"
                 app:icon="@drawable/ic_pdf"
+                app:iconSize="23dp"
+                app:iconTint="@color/black" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/translate_button"
+                android:layout_width="220dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/grey"
+                android:text="@string/translated_text"
+                android:textAlignment="center"
+                android:textSize="12sp"
+                app:icon="@drawable/ic_language"
                 app:iconSize="23dp"
                 app:iconTint="@color/black" />
         </LinearLayout>
@@ -171,5 +192,5 @@
                     android:src="@drawable/ic_delete" />
             </LinearLayout>
         </LinearLayout>
-    </android.support.constraint.ConstraintLayout>
-</android.support.v4.widget.NestedScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>

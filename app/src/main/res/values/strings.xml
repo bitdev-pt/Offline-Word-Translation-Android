@@ -9,7 +9,19 @@
         <item>Deutsch</item>
         <item>English</item>
     </string-array>
+    <string-array name="languages_symbol">
+        <item>EN</item>
+        <item>DE</item>
+    </string-array>
     <string name="scan_help">To scan, please hold your tablet over the Haiki characters.</string>
     <string name="write_here">Write here!</string>
     <string name="explore_start">Explore Start</string>
+    <string name="translated_text">Translated text</string>
+    <string name="select_language">Select Language</string>
+    <string name="language">Language</string>
+    <string name="cancel">Cancel</string>
+    <string name="text_not_found">No text found</string>
+    <string name="text_founded">Text founded</string>
+    <string name="do_translation">Successful scan</string>
+    <string name="export_to_pdf_error">You need to write something to export to PDF</string>
 </resources>

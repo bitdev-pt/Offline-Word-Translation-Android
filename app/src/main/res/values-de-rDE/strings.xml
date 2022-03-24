@@ -9,4 +9,12 @@
     <string name="pdf_transcript">PDF Transkript</string>
     <string name="write_here">Hier schreiben!</string>
     <string name="explore_start">Erforschen Starten</string>
+    <string name="translated_text">Übersetzter Text</string>
+    <string name="select_language">Sprache auswählen</string>
+    <string name="language">Sprache</string>
+    <string name="text_not_found">"Kein text gefunden "</string>
+    <string name="cancel">Stornieren</string>
+    <string name="text_founded">"Texte gegründet "</string>
+    <string name="do_translation">Scan erfolgreich</string>
+    <string name="export_to_pdf_error">Sie müssen etwas schreiben, um es in PDF zu exportieren</string>
 </resources>

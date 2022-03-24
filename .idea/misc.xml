@@ -10,9 +10,10 @@
         <entry key="app/src/main/res/drawable/ic_back.xml" value="0.1555" />
         <entry key="app/src/main/res/drawable/toolbar_bg.xml" value="0.1555" />
         <entry key="app/src/main/res/font/font.xml" value="0.287962962962963" />
+        <entry key="app/src/main/res/layout-land/activity_translation.xml" value="0.190625" />
         <entry key="app/src/main/res/layout-v26/activity_translation.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.18" />
-        <entry key="app/src/main/res/layout/activity_scan.xml" value="0.37025641025641026" />
+        <entry key="app/src/main/res/layout/activity_scan.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_translation.xml" value="0.25" />
         <entry key="app/src/main/res/layout/spinner_item_text.xml" value="0.34444444444444444" />
       </map>
