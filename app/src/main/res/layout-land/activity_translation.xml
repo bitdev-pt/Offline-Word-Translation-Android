@@ -27,8 +27,18 @@
                 android:layout_marginTop="5dp"
                 android:src="@drawable/ic_back" />
 
+            <Spinner
+                android:id="@+id/general_languages"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginTop="-30dp"
+                android:layout_marginBottom="10dp"
+                android:gravity="end" />
+
             <LinearLayout
                 android:id="@+id/chat"
+                android:layout_margin="50dp"
                 android:layout_width="match_parent"
                 android:layout_height="126dp"
                 android:layout_marginStart="20dp"
@@ -124,20 +134,20 @@
                 android:text="Haliki (Ursprache)"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                android:textSize="25sp" />
+                android:textSize="20sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
+                android:layout_marginStart="50dp"
+                android:layout_marginEnd="50dp"
                 android:background="@drawable/border_background"
                 android:orientation="vertical">
 
                 <EditText
                     android:id="@+id/translation_text"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="100dp"
                     android:layout_gravity="center"
                     android:background="@android:color/transparent"
                     android:editable="false"
@@ -158,15 +168,15 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
+                android:layout_marginStart="50dp"
+                android:layout_marginEnd="50dp"
                 android:background="@drawable/border_background"
                 android:orientation="vertical">
 
                 <EditText
                     android:id="@+id/text_to_translate"
                     android:layout_width="match_parent"
-                    android:layout_height="200dp"
+                    android:layout_height="100dp"
                     android:layout_gravity="center"
                     android:background="@android:color/transparent"
                     android:hint="@string/write_here"
