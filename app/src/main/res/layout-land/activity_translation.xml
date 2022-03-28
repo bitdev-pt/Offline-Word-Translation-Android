@@ -176,10 +176,11 @@
                 <EditText
                     android:id="@+id/text_to_translate"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="162dp"
                     android:layout_gravity="center"
                     android:background="@android:color/transparent"
                     android:hint="@string/write_here"
+                    android:imeOptions="flagNoExtractUi"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textColorHint="@color/black" />
