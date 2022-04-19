@@ -24,4 +24,10 @@
     <string name="text_founded">Text founded</string>
     <string name="do_translation">Successful scan</string>
     <string name="export_to_pdf_error">You need to write something to export to PDF</string>
+    <string name="clear_cache">Clear Cache</string>
+    <string name="cleared_cache">Cache Cleared</string>
+    <string name="pdf_saved">PDF saved at</string>
+    <string name="permission_denied">Permission Denied!</string>
+    <string name="word_saved">Word Saved!</string>
+    <string name="language_already_selected">"Language already selected</string>
 </resources>

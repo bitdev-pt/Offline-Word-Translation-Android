@@ -17,4 +17,10 @@
     <string name="text_founded">"Texte gegründet "</string>
     <string name="do_translation">Scan erfolgreich</string>
     <string name="export_to_pdf_error">Sie müssen etwas schreiben, um es in PDF zu exportieren</string>
+    <string name="clear_cache">Cache leeren</string>
+    <string name="cleared_cache">Cache gelöscht</string>
+    <string name="pdf_saved">PDF gespeichert unter</string>
+    <string name="permission_denied">Zugriff verweigert!</string>
+    <string name="word_saved">Wort gerettet!</string>
+    <string name="language_already_selected">Sprache bereits ausgewählt</string>
 </resources>

@@ -14,6 +14,8 @@ import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
+import com.bitdev.translation.utils.Prefs
+import com.bitdev.translation.utils.showCustomToast
 import com.itextpdf.text.Document
 import com.itextpdf.text.Paragraph
 import com.itextpdf.text.pdf.PdfWriter
@@ -25,6 +27,8 @@ import java.util.*
 class TranslationActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener,
     AdapterView.OnItemClickListener {
 
+    private lateinit var sharedPreference: Prefs
+
     private var mContext: Context? = null
     private lateinit var swapButton: ImageView
     private lateinit var spinner: Spinner
@@ -34,8 +38,11 @@ class TranslationActivity : AppCompatActivity(), AdapterView.OnItemSelectedListe
     private lateinit var fontType: Typeface
     private lateinit var deleteButton: ImageView
     private lateinit var scanButton: Button
+    private lateinit var clearCacheButton: Button
     private lateinit var generalLanguage: Spinner
     private lateinit var pdfButton: Button
+    private lateinit var buttonSave: ImageView
+
     private var isSwaped = false
 
     private val STORAGE_CODE = 1001
@@ -57,8 +64,10 @@ class TranslationActivity : AppCompatActivity(), AdapterView.OnItemSelectedListe
         deleteButton = findViewById(R.id.button_delete)
         pdfButton = findViewById(R.id.button_pdf)
         generalLanguage = findViewById(R.id.general_languages)
+        buttonSave = findViewById(R.id.button_save)
+        clearCacheButton = findViewById(R.id.clear_cache)
 
-        if (!intent.getStringExtra("text").isNullOrEmpty()){
+        if (!intent.getStringExtra("text").isNullOrEmpty()) {
             textTranslated.hint = intent.getStringExtra("text")
             textToTranslate.text = intent.getStringExtra("text").toString().toEditable()
         }
@@ -68,6 +77,22 @@ class TranslationActivity : AppCompatActivity(), AdapterView.OnItemSelectedListe
         val languagesSymbol = arrayOf(this.resources.getString(R.string.language), "DE", "EN")
 
         mContext = this
+        sharedPreference = Prefs(applicationContext)
+
+        if (getStoredWords().isEmpty()) {
+            clearCacheButton.visibility = View.GONE
+        } else {
+            clearCacheButton.visibility = View.VISIBLE
+        }
+
+        clearCacheButton.setOnClickListener {
+            clearStoredWords()
+            Toast(this).showCustomToast(
+                this.resources.getString(R.string.cleared_cache),
+                this
+            )
+        }
+
         currentLanguage = intent.getStringExtra(currentLang).toString()
 
         fontType = ResourcesCompat.getFont(this, R.font.rovas)!!
@@ -87,7 +112,9 @@ class TranslationActivity : AppCompatActivity(), AdapterView.OnItemSelectedListe
         }
 
         pdfButton.setOnClickListener {
-            if (textToTranslate.text.toString().isNotEmpty()) {
+            if (textToTranslate.text.toString()
+                    .isNotEmpty() || sharedPreference.getValueString("words")!!.isNotEmpty()
+            ) {
                 if (spinner.selectedItemPosition != 0) {
                     if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
                         if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
@@ -101,10 +128,16 @@ class TranslationActivity : AppCompatActivity(), AdapterView.OnItemSelectedListe
                         savePDF()
                     }
                 } else {
-                    Toast.makeText(this, this.resources.getString(R.string.select_language), Toast.LENGTH_LONG).show()
+                    Toast(this).showCustomToast(
+                        this.resources.getString(R.string.select_language),
+                        this
+                    )
                 }
             } else {
-                Toast.makeText(this, this.resources.getString(R.string.export_to_pdf_error), Toast.LENGTH_LONG).show()
+                Toast(this).showCustomToast(
+                    this.resources.getString(R.string.export_to_pdf_error),
+                    this
+                )
             }
         }
 
@@ -113,9 +146,13 @@ class TranslationActivity : AppCompatActivity(), AdapterView.OnItemSelectedListe
             startActivity(i)
         }
         deleteButton.setOnClickListener {
-            textToTranslate.text.clear()
-            textToTranslate.hint = getString(R.string.write_here)
-            textTranslated.hint = ""
+            clearTranslation()
+        }
+
+        buttonSave.setOnClickListener {
+            if (textToTranslate.text.toString().isNotEmpty()) {
+                saveWordOnSession()
+            }
         }
 
         backButton.setOnClickListener {
@@ -139,7 +176,18 @@ class TranslationActivity : AppCompatActivity(), AdapterView.OnItemSelectedListe
 
     }
 
-    fun String.toEditable(): Editable =  Editable.Factory.getInstance().newEditable(this)
+    private fun getStoredWords(): List<String> {
+        val list = sharedPreference.getValueString("words")!!.split(",")
+        return list.filter { !it.isNullOrEmpty() }        // .filterNot { it.isNullOrEmpty() }
+            .toList()
+    }
+
+    private fun clearStoredWords() {
+        clearCacheButton.visibility = View.GONE
+        sharedPreference.clearSharedPreference()
+    }
+
+    private fun String.toEditable(): Editable = Editable.Factory.getInstance().newEditable(this)
 
     private fun savePDF() {
         val mDoc = Document()
@@ -149,22 +197,68 @@ class TranslationActivity : AppCompatActivity(), AdapterView.OnItemSelectedListe
         ).format(System.currentTimeMillis())
 
         val mFilePath =
-            Environment.getExternalStorageDirectory().toString() + "/" + mFileName + ".pdf"
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+                .toString() + "/" + mFileName + ".pdf"
 
         try {
             PdfWriter.getInstance(mDoc, FileOutputStream(mFilePath))
             mDoc.open()
-
             val language = spinner.selectedItem.toString()
-            val data = "Haiki Language:"+textToTranslate.text.toString() + " | " + language + " Language:" + textTranslated.hint.toString()
             mDoc.addAuthor("Francisco Collina")
             mDoc.add(Paragraph("Translations"))
-            mDoc.add(Paragraph(data))
-            mDoc.close()
-            Toast.makeText(this, "PDF saved at $mFilePath", Toast.LENGTH_LONG).show()
+
+            if (getStoredWords().isEmpty()) {
+                val data =
+                    "Haiki Language:" + textToTranslate.text.toString() + " | " + language + " Language:" + textTranslated.hint.toString()
+                mDoc.add(Paragraph(data))
+                mDoc.close()
+            } else {
+                val storedWords = getStoredWords()
+                storedWords.forEach {
+                    mDoc.add(Paragraph("Haiki Language:" + it + " | " + language + " Language:" + it))
+                }
+                if (textTranslated.hint.toString().isNotEmpty()) {
+                    mDoc.add(
+                        Paragraph(
+                            "Haiki Language:" + textToTranslate.text.toString() + " | " + language + " Language:" + textTranslated.hint.toString()
+                        )
+                    )
+                }
+                mDoc.close()
+            }
+
+            Toast(this).showCustomToast(
+                "${this.resources.getString((R.string.export_to_pdf_error))}+ $mFilePath",
+                this
+            )
+            clearStoredWords()
         } catch (e: Exception) {
             Log.e("pdf_error", e.toString())
         }
+    }
+
+    private fun saveWordOnSession() {
+        // Guardar no shared preferences "words" -> se existir já algo saved adicionar no fim/atualizar
+        try {
+            if (sharedPreference.getValueString("words")!!.isNotEmpty()) {
+                val words = sharedPreference.getValueString("words").toString()
+                val wordToStore = words + "," + textToTranslate.text.toString()
+                sharedPreference.save("words", wordToStore)
+            } else {
+                sharedPreference.save("words", textToTranslate.text.toString())
+            }
+        } catch (e: Exception) {
+            Log.e("error", e.toString())
+        }
+        Toast(this).showCustomToast(this.resources.getString((R.string.word_saved)), this)
+        clearCacheButton.visibility = View.VISIBLE
+        clearTranslation()
+    }
+
+    private fun clearTranslation() {
+        textToTranslate.text.clear()
+        textToTranslate.hint = getString(R.string.write_here)
+        textTranslated.hint = ""
     }
 
     override fun onRequestPermissionsResult(
@@ -177,14 +271,16 @@ class TranslationActivity : AppCompatActivity(), AdapterView.OnItemSelectedListe
                 if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     savePDF()
                 } else {
-                    Toast.makeText(this, "Permission denied!", Toast.LENGTH_LONG).show()
+                    Toast(this).showCustomToast(
+                        this.resources.getString((R.string.permission_denied)),
+                        this
+                    )
                 }
             }
         }
     }
 
     private fun swapTranslations() {
-        Toast.makeText(this, isSwaped.toString(), Toast.LENGTH_SHORT).show()
         if (isSwaped) {
             textTranslated.isEnabled = true
             textTranslated.isFocusableInTouchMode = true
@@ -228,9 +324,10 @@ class TranslationActivity : AppCompatActivity(), AdapterView.OnItemSelectedListe
             refresh.putExtra(currentLang, localeName)
             startActivity(refresh)
         } else {
-            Toast.makeText(
-                this, "Language, , already, , selected)!", Toast.LENGTH_SHORT
-            ).show()
+            Toast(this).showCustomToast(
+                this.resources.getString((R.string.language_already_selected)),
+                this
+            )
         }
     }
 }

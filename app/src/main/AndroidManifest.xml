@@ -22,9 +22,8 @@
             android:exported="false" />
         <activity
             android:name=".TranslationActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false">
-        </activity>
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"></activity>
         <activity
             android:name=".MainActivity"
             android:exported="true">

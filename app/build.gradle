@@ -59,4 +59,6 @@ dependencies {
 
     // To recognize Japanese script
     implementation 'com.google.mlkit:text-recognition-japanese:16.0.0-beta3'
+
+    implementation 'com.google.code.gson:gson:2.8.9'
 }
