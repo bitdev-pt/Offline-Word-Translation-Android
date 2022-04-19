@@ -12,6 +12,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+
         startButton = findViewById(R.id.start_button)
 
         startButton.setOnClickListener {
